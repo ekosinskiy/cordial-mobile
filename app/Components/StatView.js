@@ -32,7 +32,7 @@ export default class StatView extends Component {
     };
 
     render() {
-        console.log("DATA:::", this.props);
+        //console.log("DATA:::", this.props);
         let data = this.props.data;
         let dataOutput = [];
         dataOutput.push(<Text key="0" style={styles.header}>{data.header}</Text>);

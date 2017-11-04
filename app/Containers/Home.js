@@ -9,8 +9,8 @@ class Home extends Component {
 
 
 
-    login = (login, password) => {
-        this.props.login(login, password, this.props.getDashboard);
+    login = (server, login, password) => {
+        this.props.login(server, login, password, this.props.getDashboard);
     };
 
     logout = () => {
@@ -22,12 +22,28 @@ class Home extends Component {
     };
 
     render() {
-        console.log(this.props);
-        let form = <Login loginAction={this.login}/>;
+        let form = <Login loginAction={this.login} loginForm={this.props.loginForm}/>;
         let header;
         if(this.isLogin()) {
+            this.props.currentAccount = {
+                accountID: 11,
+                accountName: "Cordial"
+            };
+            this.props.accountList = [
+                {
+                    useAccountsID: 176,
+                    accountName: "Findit"
+                },
+                {
+                    useAccountsID: 175,
+                    accountName: "Cordial"
+                }
+            ];
             form = <Dashboard dashboard={this.props.dashboard}/>;
-            header = <AccountHeader logout={this.logout}/>
+            header = <AccountHeader
+                logout={this.logout}
+                currentAccount={this.props.currentAccount}
+            />
         }
         return (
             <Container>
@@ -50,7 +66,9 @@ class Home extends Component {
 function mapsStateToProps(state) {
     return {
         account: state.loginRecipes,
-        dashboard: state.dashboardRecipe
+        dashboard: state.dashboardRecipe,
+        serverName: state.serverRecipe,
+        loginForm: state.loginFormRecipe
     }
 }
 

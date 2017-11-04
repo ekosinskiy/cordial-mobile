@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Content, Text, Spinner, Tab, Tabs} from 'native-base';
 import StatView from './StatView';
 import AllEMails from './AllEmails';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
     content: {
@@ -30,7 +30,7 @@ export default class Dashboard extends Component<{}> {
         return <StatView data={data}/>
     };
 
-    getAtomated = () => {
+    getAutomated = () => {
         const data = {
             header: 'Current Automated Sending',
             items: [
@@ -91,12 +91,12 @@ export default class Dashboard extends Component<{}> {
             <Content>
                 <Tabs>
                     <Tab heading="General">
-                        <ScrollView style={styles.content}>
+                        <Content style={styles.content}>
                             {this.getActivity()}
                             {this.getContact()}
-                            {this.getAtomated()}
+                            {this.getAutomated()}
                             {this.getCurrentSending()}
-                        </ScrollView>
+                        </Content>
                     </Tab>
                     <Tab heading="All email">
                         <AllEMails stat={this.props.dashboard.email}/>

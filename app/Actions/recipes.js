@@ -14,9 +14,39 @@ export function setDashboard({dashboard}) {
     }
 }
 
+export function setCurrentAccount({currentAccount}) {
+    return {
+        type: types.SET_CURRENT_ACCOUNT,
+        currentAccount
+    }
+}
+
+export function setAccountList({accountList}) {
+    return {
+        type: types.SET_ACCOUNT_LIST,
+        accountList
+    }
+}
+
+export function setServer({server}) {
+    return {
+        type: types.SET_SERVER_NAME,
+        server
+    }
+}
+
+export function setLoginForm({loginForm}) {
+    return {
+        type: types.SET_LOGIN_FORM,
+        loginForm
+    }
+}
+
+
 export function logout() {
     return (dispatch, getState) => {
-        fetch('https://ekosinskiy.admin.dev.cordial.io/api/users/logout', {
+        const serverName = getState()['serverRecipe'];
+        fetch('https://'+serverName+'/api/users/logout', {
             method: 'POST',
             headers: types.HEADERS
         }).then((response) => {
@@ -28,7 +58,8 @@ export function logout() {
 
 export function getDashboard() {
     return (dispatch, getState) => {
-        fetch('https://ekosinskiy.admin.dev.cordial.io/api/dashboard', {
+        const serverName = getState()['serverRecipe'];
+        fetch('https://'+serverName+'/api/dashboard', {
             method: 'GET',
             headers: types.HEADERS
         }).then((resposne) => resposne.json()).then((responseJson) => {
@@ -45,13 +76,17 @@ export function getAccountList() {
 
 export function getAccountInfo() {
     return (dispatch, getState) => {
+        //console.log(getState())
         // https://ekosinskiy.admin.dev.cordial.io/api/accounts/11
     };
 }
 
-export function login(email, password, nextStep) {
+export function login(server, email, password, nextStep) {
     return (dispatch, getState) => {
-        fetch('https://ekosinskiy.admin.dev.cordial.io/api/users/authorize', {
+        dispatch(setServer({server:server}));
+        const serverName = getState()['serverRecipe'];
+
+        fetch('https://'+serverName+'/api/users/authorize', {
             method: 'POST',
             headers: types.HEADERS,
             body: JSON.stringify({
@@ -59,10 +94,14 @@ export function login(email, password, nextStep) {
                 password: password
             })
         }).then((resposne) => resposne.json()).then((responseJson) => {
+            dispatch(setLoginForm({loginForm:{
+                serverName: server,
+                email: email
+            }}));
             dispatch(setLogin({user:responseJson}));
             nextStep();
         }).catch((err) => {
-            console.log("ERROR", err);
+            alert("Host:"+serverName+"\n"+err);
         });
     }
 }

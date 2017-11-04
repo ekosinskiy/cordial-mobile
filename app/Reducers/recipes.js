@@ -9,15 +9,21 @@ export const loginRecipes = createReducer({}, {
 
 export const dashboardRecipe = createReducer({}, {
     [types.SET_DASHBOARD](state, action){
-        console.log(action);
         return action.dashboard;
     }
 });
 
+export const serverRecipe = createReducer({}, {
+    [types.SET_SERVER_NAME](state, action) {
+        if(action.server!=='local' && action.server!=='production') {
+            return action.server+types.serverList.dev;
+        }
+        return types.serverList[action.server];
+    }
+});
 
-//
-// export const recipeCount = createReducer(0, {
-//     [types.ADD_RECIPE](state, action){
-//         return state+1;
-//     }
-// });
+export const loginFormRecipe = createReducer({}, {
+    [types.SET_LOGIN_FORM](state, action) {
+        return action.loginForm;
+    }
+});
